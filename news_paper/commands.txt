@@ -37,3 +37,12 @@ for post in posts:
             content = get_text(1)
             Comment.objects.create(post=post, user=user, content=content)
 
+like_dislike()
+from news.models import *
+authors = Author.objects.all()
+for author in authors:
+    update_rating(author)
+
+authors = Author.objects.order_by("-rating")
+print("Лучший пользователь: {0}, его рейтинг: {0}".format(authors[0].user.username, authors[0].rating))
+
