@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from random import randint
 
 
 # Create your models here.
@@ -9,6 +10,7 @@ class Author(models.Model):
 
     def update_rating(self, new_rating: int):
         self.rating = new_rating
+        self.save()
 
 
 class Category(models.Model):
@@ -34,11 +36,11 @@ class Post(models.Model):
 
     def like(self):
         self.rating += 1
-
+        self.save()
 
     def dislike(self):
-        if self.rating > 0:
-            self.rating -= 1
+        self.rating -= 1
+        self.save()
 
     def preview(self) -> str:
         if len(self.content) > Post.preview_len:
@@ -61,9 +63,38 @@ class Comment(models.Model):
 
     def like(self):
         self.rating += 1
+        self.save()
 
     def dislike(self):
-        if self.rating > 0:
-            self.rating -= 1
+        self.rating -= 1
+        self.save()
+
+
+#временные функции
+def like_dislike():
+    posts = Post.objects.all()
+    for post in posts:
+        for i in range(randint(1, 1000)):
+            post.like()
+        for i in range(randint(1, 900)):
+            post.dislike()
+    comments = Comment.objects.all()
+    for comment in comments:
+        for i in range(randint(1, 1000)):
+            comment.like()
+        for i in range(randint(1, 900)):
+            comment.dislike()
+
+
+def update_rating(author: Author):
+    posts = Post.objects.filter(author=author)
+    rating_posts = sum(post.rating for post in posts) * 3
+    ratings = Comment.objects.filter(user=author.user).values("rating")
+    rating_comments = sum([rating["rating"] for rating in list(ratings)])
+    rating_post_comments = 0
+    for post in posts:
+        ratings = Comment.objects.filter(post=post).values("rating")
+        rating_post_comments += sum([rating["rating"] for rating in list(ratings)])
+    author.update_rating(rating_posts + rating_comments + rating_post_comments)
 
 
