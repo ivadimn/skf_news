@@ -1,4 +1,4 @@
-from random import choice
+from random import choice, randint
 
 one = [
     "Товарищи! ",
@@ -46,6 +46,17 @@ sentences = [
     "Cras vel elit sed mi placerat pharetra eget vel odio. ",
     "Duis ac nulla varius diam ultrices rutrum. ",
 ]
+
+
+def get_content(scount: int = 2) -> str:
+    content = [one[0]]
+    for s in range(scount):
+        if s > 0:
+            content.append(one[randint(1, 5)])
+        content.append(choice(two))
+        content.append(choice(three))
+        content.append(choice(four))
+    return "".join(content)
 
 
 def get_text(pcount: int = 2) -> str:

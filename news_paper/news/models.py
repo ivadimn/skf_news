@@ -86,6 +86,9 @@ def like_dislike():
             comment.dislike()
 
 
+# суммарный рейтинг каждой статьи автора умножается на 3;
+# суммарный рейтинг всех комментариев автора;
+# суммарный рейтинг всех комментариев к статьям автора.
 def update_rating(author: Author):
     posts = Post.objects.filter(author=author)
     rating_posts = sum(post.rating for post in posts) * 3
