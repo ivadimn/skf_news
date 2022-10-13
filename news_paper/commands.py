@@ -7,7 +7,7 @@ names = ["John", "Sara", "Pete", "Ann", "Olga"]
 users = []
 for name in names:
     users.append(User.objects.create_user(name))
-# Создать два объекта модели Author, связанные с пользователями.
+# Создать модели Author, связанные с пользователями.
 authors = []
 for user in users:
     authors.append(Author.objects.create(user = user))
@@ -61,4 +61,12 @@ for author in authors:
 # Вывести username и рейтинг лучшего пользователя (применяя сортировку и возвращая поля первого объекта).
 authors_sort = Author.objects.order_by("-rating")
 print("Лучший пользователь: {0}, его рейтинг: {1}".format(authors_sort[0].user.username, authors_sort[0].rating))
+
+# Вывести дату добавления, username автора, рейтинг,
+# заголовок и превью лучшей статьи, основываясь на лайках/дислайках к этой статье.
+post = Post.objects.order_by("-rating")[0]
+print("Лучшая статья: ")
+print("Дата добавления: {0}, Автор: {1}, рейтинг: {2}, название: {3}".
+        format(post.created_at.strftime("%d.%m.%Y"), post.author.user.username, post.rating, post.title))
+print("Предпросмотр:\n {0}".format(post.preview()))
 
