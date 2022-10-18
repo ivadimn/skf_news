@@ -1,0 +1,12 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+{{ news.title }}
+{% endblock title %}
+
+{% block content %}
+{{ news.time_in }}
+{{ news.title }}
+<hr>
+{{ news.content }}
+{% endblock content %}

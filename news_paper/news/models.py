@@ -48,6 +48,13 @@ class Post(models.Model):
         else:
             return self.content
 
+    @property
+    def time_in(self):
+        return self.created_at.strftime("%d.%m.%Y")
+
+    def __str__(self):
+        return "{0}, {1}\n{2}".format(self.time_in, self.title, self.preview())
+
 
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
