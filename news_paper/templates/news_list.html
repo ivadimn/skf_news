@@ -5,6 +5,23 @@
 {% endblock title %}
 
 {% block content %}
-<h3>Последние новости</h3>
-{{ news_list }}
+    <h3>Новостей на сегодня {{news_list|length}}</h3>
+    {% if news_list %}
+        <table cellpadding="10" border="1" width="80%" cols="3">
+            <tr>
+                <td>Дата</td>
+                <td>Заголовок</td>
+                <td>Рейтинг</td>
+            </tr>
+            {% for news in news_list%}
+            <tr>
+                <td>{{ news.created_at|date:'d.m.Y' }}</td>
+                <td align="left">{{ news.content|truncatewords:20}}</td>
+                <td>{{ news.rating }}</td>
+            </tr>
+            {%endfor%}
+        </table>
+    {% else %}
+        <h3>Новостей нет</h3>
+    {% endif %}
 {% endblock content %}

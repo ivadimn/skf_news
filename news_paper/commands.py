@@ -35,6 +35,8 @@ for author in authors:
     title = get_title()
     content = get_content(randint(2, 8))
     posts.append(Post.objects.create(author=author, type_post=Post.news, title=title, content=content))
+    post = Post.objects.create(author=author, type_post=Post.news, title=title, content=content)
+
 
 # Присвоить статьям и новостям категории
 for post in posts:
