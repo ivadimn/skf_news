@@ -7,17 +7,18 @@
 {% block content %}
     <h3>Новостей на сегодня {{news_list|length}}</h3>
     {% if news_list %}
-        <table cellpadding="10" border="1" width="80%" cols="3">
+        <table cellpadding="10"  border="1" align="center" width="80%" cols="2">
             <tr>
-                <td>Дата</td>
-                <td>Заголовок</td>
-                <td>Рейтинг</td>
+                <td border="1">Заголовок</td>
+                <td>Дата публикации</td>
             </tr>
             {% for news in news_list%}
             <tr>
+                <td>{{ news.title }}</td>
                 <td>{{ news.created_at|date:'d.m.Y' }}</td>
-                <td align="left">{{ news.content|truncatewords:20}}</td>
-                <td>{{ news.rating }}</td>
+            </tr>
+            <tr>
+                <td align="left"  colspan="2">{{ news.content|truncatewords:20}}</td>
             </tr>
             {%endfor%}
         </table>
