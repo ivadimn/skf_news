@@ -1,11 +1,13 @@
 from random import choice, randint
+import json
+import string
 
 one = [
     "Товарищи! ",
     "С другой стороны ",
     "Равным образом ",
     "Не следует однако забывать, что ",
-    "Таким образом",
+    "Таким образом ",
     "Повседневная практика показывает, что ",
 ]
 two = [
@@ -14,7 +16,7 @@ two = [
     "постоянный количественный рост и сфера нашей активности ",
     "сложившаяся структура организации ",
     "новая модель организационной деятельности ",
-    "дальнейшее развитие различных форм деятельности",
+    "дальнейшее развитие различных форм деятельности ",
 ]
 three = [
     "играет важную роль в формировании ",
@@ -48,15 +50,29 @@ sentences = [
 ]
 
 
+def get_sentence(s_lst: list, mat_lst: list) -> str:
+    n = randint(0, 1)
+    if n == 1:
+        mat = choice(mat_lst)
+        pos = randint(1, len(s_lst) - 1)
+        s_lst.insert(pos, mat)
+    return " ".join(s_lst)
+
+
 def get_content(scount: int = 2) -> str:
+    with open("cenz.json", "r", encoding="utf-8") as ef:
+        j_list = json.load(ef)
     content = [one[0]]
     for s in range(scount):
+        ss = []
         if s > 0:
-            content.append(one[randint(1, 5)])
-        content.append(choice(two))
-        content.append(choice(three))
-        content.append(choice(four))
-    return "".join(content)
+            ss.append(one[randint(1, 5)])
+        ss.append(choice(two))
+        ss.append(choice(three))
+        ss.append(choice(four))
+        sentence = get_sentence(" ".join(ss).split(), j_list)
+        content.append(sentence)
+    return " ".join(content)
 
 
 def get_text(pcount: int = 2) -> str:
@@ -73,4 +89,27 @@ def get_text(pcount: int = 2) -> str:
 
 
 def get_title() -> str:
-    return choice(sentences)
+    with open("cenz.json", "r", encoding="utf-8") as ef:
+        j_list = json.load(ef)
+    return get_sentence(choice(sentences).split(), j_list)
+
+
+def replace(word: str) -> str:
+    return "{0}{1}".format(word[0], "*" * (len(word) - 1))
+
+
+def censor(content: str) -> str:
+    with open("cenz.json", "r", encoding="utf-8") as ef:
+        j_list = json.load(ef)
+    raw_words = content.split()
+    words = [word for word in content.translate(str.maketrans("", "", string.punctuation)).split()]
+    for i, word in enumerate(words):
+        if word in j_list:
+            raw_word = raw_words[i]
+            last_symbol = raw_word[-1]
+            if last_symbol.isalpha():
+                raw_words[i] = replace(raw_word)
+            else:
+                raw_words[i] = "{0}{1}".format(replace(raw_word[:-1]), last_symbol)
+    return " ".join(raw_words)
+
