@@ -8,6 +8,7 @@ class NewsList(ListView):
     model = Post
     ordering = "-created_at"
     template_name = "news_list.html"
+    paginate_by = 5
     context_object_name = "news_list"
 
 
