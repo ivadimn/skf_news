@@ -1,6 +1,9 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import  (
+    ListView, DetailView, CreateView
+)
 from .models import Post
+from .forms import ArticleForm
 
 
 # Create your views here.
@@ -17,4 +20,11 @@ class News(DetailView):
     template_name = "news.html"
     pk_url_kwarg = "id"
     context_object_name = "news"
+
+
+class ArticleCreate(CreateView):
+    form_class = ArticleForm
+    model = Post
+    template_name = "news_edit.html"
+
 
