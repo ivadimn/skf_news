@@ -14,12 +14,14 @@
                 <td><h5>Заголовок</h5></td>
                 <td><h5>Дата</h5></td>
                 <td><h5>Предпросмотр</h5></td>
+                <td><h5>Автор</h5></td>
             </tr>
             {% for news in news_list%}
             <tr>
                 <td>{{ news.title|censor }}</td>
                 <td>{{ news.created_at|date:'d.m.Y' }}</td>
                 <td align="left">{{ news.content|censor|truncatechars:20}}</td>
+                <td>{{ news.author.user.username }}</td>
             </tr>
             {%endfor%}
         </table>
