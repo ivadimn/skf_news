@@ -1,11 +1,11 @@
 {% extends 'flatpages/default.html' %}
 
 {% block content %}
-<h2>Новость</h2>
+<h2>{{ type_post }}</h2>
 <hr>
 <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Save">
+    <input type="submit" value="Сохранить">
 </form>
 {% endblock content %}

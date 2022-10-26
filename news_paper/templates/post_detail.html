@@ -2,12 +2,12 @@
 {% load custom_filters %}
 
 {% block title %}
-{{ news.title }}
+{{ post.title }}
 {% endblock title %}
 
 {% block content %}
-{{ news.time_in }}
+{{ post.time_in }}
 {{ news.title|censor }}
 <hr>
-{{ news.content|censor }}
+{{ post.content|censor }}
 {% endblock content %}

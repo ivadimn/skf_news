@@ -3,12 +3,12 @@
 {% load custom_filters %}
 
 {% block title %}
-Список всех новостей
+Список всех новостей и статей
 {% endblock title %}
 
 {% block content %}
-    <h3>Новостей на сегодня {{news_list|length}}</h3>
-    {% if news_list %}
+    <h3>Список всех новостей и статей</h3>
+    {% if post_list %}
         <table cellpadding="10" width="100%" cols="3" align="center">
             <tr>
                 <td><h5>Заголовок</h5></td>
@@ -16,12 +16,12 @@
                 <td><h5>Предпросмотр</h5></td>
                 <td><h5>Автор</h5></td>
             </tr>
-            {% for news in news_list%}
+            {% for post in post_list%}
             <tr>
-                <td>{{ news.title|censor }}</td>
-                <td>{{ news.created_at|date:'d.m.Y' }}</td>
-                <td align="left">{{ news.content|censor|truncatechars:20}}</td>
-                <td>{{ news.author.user.username }}</td>
+                <td>{{ post.title|censor }}</td>
+                <td>{{ post.created_at|date:'d.m.Y' }}</td>
+                <td align="left">{{ post.content|censor|truncatechars:20}}</td>
+                <td>{{ post.author.user.username }}</td>
             </tr>
             {%endfor%}
         </table>
