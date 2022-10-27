@@ -8,7 +8,11 @@
 
 {% block content %}
     <h3>Список всех новостей и статей</h3>
-
+    <form action=""method="get">
+       {{ filterset.form.as_p }}
+    <input type="submit" value="Найти">
+   </form>
+    <hr>
     {% if post_list %}
         <table cellpadding="10" width="100%" cols="3" align="center">
             <tr>

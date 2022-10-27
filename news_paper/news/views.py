@@ -1,18 +1,36 @@
-from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import  (
-    ListView, DetailView, CreateView
+    ListView, DetailView, CreateView, UpdateView, DeleteView
 )
 from .models import Post
 from .forms import PostForm
+from .filters import PostFilter
 
 
-# Create your views here.
 class PostList(ListView):
     model = Post
     ordering = "-created_at"
     template_name = "post_list.html"
-    paginate_by = 5
+    paginate_by = 10
     context_object_name = "post_list"
+
+
+class PostSearch(ListView):
+    model = Post
+    ordering = "-created_at"
+    template_name = "post_search.html"
+    paginate_by = 10
+    context_object_name = "post_list"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filterset = PostFilter(self.request.GET, queryset)
+        return self.filterset.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["filterset"] = self.filterset
+        return context
 
 
 class PostDetail(DetailView):
@@ -38,6 +56,30 @@ class ArticleCreate(CreateView):
         return context
 
 
+class ArticleUpdate(UpdateView):
+    form_class = PostForm
+    queryset = Post.objects.filter(type_post=Post.article)
+    template_name = "post_edit.html"
+    pk_url_kwarg = "id"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type_post'] = "Статья"
+        return context
+
+
+class ArticleDelete(DeleteView):
+    queryset = Post.objects.filter(type_post=Post.article)
+    template_name = "post_delete.html"
+    pk_url_kwarg = "id"
+    success_url = reverse_lazy("post_list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type_post'] = "Статья"
+        return context
+
+
 class NewsCreate(CreateView):
     form_class = PostForm
     model = Post
@@ -47,6 +89,30 @@ class NewsCreate(CreateView):
         post = form.save(commit=False)
         post.type_post = Post.news
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type_post'] = "Новость"
+        return context
+
+
+class NewsUpdate(UpdateView):
+    form_class = PostForm
+    queryset = Post.objects.filter(type_post=Post.news)
+    pk_url_kwarg = "id"
+    template_name = "post_edit.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type_post'] = "Новость"
+        return context
+
+
+class NewsDelete(DeleteView):
+    queryset = Post.objects.filter(type_post=Post.news)
+    template_name = "post_delete.html"
+    pk_url_kwarg = "id"
+    success_url = reverse_lazy("post_list")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
