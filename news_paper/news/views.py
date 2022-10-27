@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import  (
     ListView, DetailView, CreateView, UpdateView, DeleteView
 )
-from .models import Post
+from .models import Post, Author
 from .forms import PostForm
 from .filters import PostFilter
 
