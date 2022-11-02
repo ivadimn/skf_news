@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import  (
     ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -56,7 +57,7 @@ class ArticleCreate(CreateView):
         return context
 
 
-class ArticleUpdate(UpdateView):
+class ArticleUpdate(LoginRequiredMixin, UpdateView):
     form_class = PostForm
     queryset = Post.objects.filter(type_post=Post.article)
     template_name = "post_edit.html"
