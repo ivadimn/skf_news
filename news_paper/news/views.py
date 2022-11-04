@@ -8,7 +8,7 @@ from .forms import PostForm
 from .filters import PostFilter
 
 
-class PostList(ListView):
+class PostList(LoginRequiredMixin, ListView):
     model = Post
     ordering = "-created_at"
     template_name = "post_list.html"
