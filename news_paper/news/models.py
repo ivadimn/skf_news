@@ -16,6 +16,7 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
+    subscribers = models.ManyToManyField(User, through="CategoryUser")
 
 
 class Post(models.Model):
@@ -80,6 +81,10 @@ class Comment(models.Model):
         self.rating -= 1
         self.save()
 
+
+class CategoryUser(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 #временные функции
 def like_dislike():
