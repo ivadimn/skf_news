@@ -8,7 +8,9 @@
 
 {% block content %}
     <h3>Список всех новостей и статей</h3>
-
+    {% if is_not_authors %}
+        <button> <a href="upgrade/"> Хочу стать автором!!!</a> </button>
+    {% endif %}
     {% if post_list %}
         <table cellpadding="10" width="100%" cols="3" align="center">
             <tr>
