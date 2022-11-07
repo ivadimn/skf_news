@@ -86,7 +86,8 @@ class CategoryUser(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-#временные функции
+
+# временные функции
 def like_dislike():
     posts = Post.objects.all()
     for post in posts:

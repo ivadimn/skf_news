@@ -1,5 +1,5 @@
 from django_filters import FilterSet, DateFilter, ModelChoiceFilter
-from .models import Post, Author
+from .models import Post, Category
 
 
 class PostFilter(FilterSet):
@@ -11,4 +11,13 @@ class PostFilter(FilterSet):
         fields = {
             "title": ["icontains"],
             "author": ["exact"],
+        }
+
+
+class PostCategoryFilter(FilterSet):
+
+    class Meta:
+        model = Post
+        fields = {
+            "categories": ["exact"],
         }

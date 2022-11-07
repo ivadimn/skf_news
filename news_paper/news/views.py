@@ -8,7 +8,7 @@ from django.views.generic import  (
 )
 from .models import Post, Author
 from .forms import PostForm
-from .filters import PostFilter
+from .filters import PostFilter, PostCategoryFilter
 
 
 @login_required
@@ -27,10 +27,22 @@ class PostList(LoginRequiredMixin, ListView):
     paginate_by = 10
     context_object_name = "post_list"
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filterset = PostCategoryFilter(self.request.GET, queryset)
+        print("******************** get_queryset*******************8")
+        return self.filterset.qs
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
+        context["filterset"] = self.filterset
+        print(type(self.request.GET.get("categories")))
         return context
+
+    def post(self, request, *args, **kwargs):
+        print("post")
+        return redirect("/news")
 
 
 class PostSearch(ListView):
