@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import  (
     ListView, DetailView, CreateView, UpdateView, DeleteView
 )
-from .models import Post, Author
+from .models import Post, Category
 from .forms import PostForm
 from .filters import PostFilter, PostCategoryFilter
 
@@ -37,11 +37,22 @@ class PostList(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
         context["filterset"] = self.filterset
-        print(type(self.request.GET.get("categories")))
+        category = self.request.GET.get("categories")
+        if category is not None:
+            context["category"] = Category.objects.get(pk=int(category))
+        else:
+            context["category"] = None
         return context
 
     def post(self, request, *args, **kwargs):
-        print("post")
+        #category : Category = context["category"]
+        print(request.POST.keys())
+        for val in request.POST.values():
+            print(val)
+        print(kwargs)
+        user = request.user
+        #category.subscribers.add(user)
+        print(user)
         return redirect("/news")
 
 
