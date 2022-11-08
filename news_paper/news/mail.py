@@ -26,11 +26,11 @@ class Mail:
         self.__message["Subject"] = subject
         self.__message.attach(MIMEText(html_content, "html"))
 
-    def send(self, destination: str) -> bool:
+    def send(self, destinations: list) -> bool:
         try:
             self.__server.login(self.__sender, pickup)
-            self.__message["To"] = destination
-            self.__server.sendmail(self.__sender, destination, self.__message.as_string())
+            self.__message["To"] = ", ".join(destinations)
+            self.__server.sendmail(self.__sender, destinations, self.__message.as_string())
             return True
         except Exception as ex:
             print(str(ex))

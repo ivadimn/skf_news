@@ -7,11 +7,10 @@ from django.views.generic import  (
     ListView, DetailView, CreateView, UpdateView, DeleteView
 )
 from django.template.loader import render_to_string
-from django.core.mail import send_mail
-from .models import Post, Category
+from .models import Post, Category, CategoryUser
 from .forms import PostForm
 from .filters import PostFilter, PostCategoryFilter
-from news_paper.mail import Mail
+from .mail import Mail
 
 
 @login_required
@@ -132,6 +131,7 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.type_post = Post.news
+        print(self.get_email_list(form.cleaned_data.get("categories")))
         self.send_email(post)
         return super().form_valid(form)
 
@@ -150,7 +150,14 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
         )
         mail = Mail("pickup.music@mail.ru")
         mail.prepare(post.title, post.content, html_content)
-        mail.send("ivadimn@mail.ru")
+        mail.send(["ivadimn@gmail.com", "ivadimn@mail.ru"])
+
+    def get_email_list(self, categories) -> list:
+        emails_list = []
+        for cat in categories:
+            emails_list.extend([cat_user.user.email for cat_user in CategoryUser.objects.filter(category=cat)])
+        return emails_list
+
 
 
 
