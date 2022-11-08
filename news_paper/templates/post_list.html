@@ -15,8 +15,8 @@
     {% if category %}
         <form action=""method="post">
             {% csrf_token %}
-            <p>Категория: {{ category.name }}</p>>
-            <input type="submit" value="Подписаться">
+            <label for="sign">{{ category.name }}</label>
+            <input type="submit" value="Подписаться" id="sign">
         </form>
     {% endif %}
     <hr>

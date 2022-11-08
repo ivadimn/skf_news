@@ -6,9 +6,12 @@ from django.urls import reverse_lazy
 from django.views.generic import  (
     ListView, DetailView, CreateView, UpdateView, DeleteView
 )
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
 from .models import Post, Category
 from .forms import PostForm
 from .filters import PostFilter, PostCategoryFilter
+from news_paper.mail import Mail
 
 
 @login_required
@@ -30,29 +33,26 @@ class PostList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         self.filterset = PostCategoryFilter(self.request.GET, queryset)
-        print("******************** get_queryset*******************8")
         return self.filterset.qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
         context["filterset"] = self.filterset
-        category = self.request.GET.get("categories")
-        if category is not None:
-            context["category"] = Category.objects.get(pk=int(category))
+        category_id = self.request.GET.get("categories")
+        if category_id is not None:
+            context["category"] = Category.objects.get(pk=int(category_id))
         else:
             context["category"] = None
         return context
 
     def post(self, request, *args, **kwargs):
-        #category : Category = context["category"]
-        print(request.POST.keys())
-        for val in request.POST.values():
-            print(val)
-        print(kwargs)
+        category_id = self.request.GET.get("categories")
         user = request.user
-        #category.subscribers.add(user)
-        print(user)
+        if category_id is not None:
+            category = Category.objects.get(pk=int(category_id))
+            category.subscribers.add(user)
+            category.save()
         return redirect("/news")
 
 
@@ -132,12 +132,27 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.type_post = Post.news
+        self.send_email(post)
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['type_post'] = "Новость"
         return context
+
+    def send_email(self, post: Post):
+        html_content = render_to_string(
+            'news_created.html',
+            {
+                'post': post,
+                'user': post.author.user
+            }
+        )
+        mail = Mail("pickup.music@mail.ru")
+        mail.prepare(post.title, post.content, html_content)
+        mail.send("ivadimn@mail.ru")
+
+
 
 
 class NewsUpdate(PermissionRequiredMixin, UpdateView):
