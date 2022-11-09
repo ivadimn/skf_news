@@ -131,8 +131,8 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.type_post = Post.news
-        print(self.get_email_list(form.cleaned_data.get("categories")))
-        self.send_email(post)
+        email_list = self.get_email_list(form.cleaned_data.get("categories"))
+        self.send_email(post, email_list)
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -140,7 +140,7 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
         context['type_post'] = "Новость"
         return context
 
-    def send_email(self, post: Post):
+    def send_email(self, post: Post, email_list: list):
         html_content = render_to_string(
             'news_created.html',
             {
@@ -150,7 +150,7 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
         )
         mail = Mail("pickup.music@mail.ru")
         mail.prepare(post.title, post.content, html_content)
-        mail.send(["ivadimn@gmail.com", "ivadimn@mail.ru"])
+        mail.send(email_list)
 
     def get_email_list(self, categories) -> list:
         emails_list = []

@@ -150,9 +150,8 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_FORMS = {'signup': 'news.forms.BasicSignupForm'}
 
 MAIL_HOST = 'smtp.mail.ru'
-EMAIL_PORT = 465  # порт smtp сервера тоже одинаковый
-EMAIL_HOST_USER = 'pickup.music'
-#EMAIL_HOST_PASSWORD = "ikk5myXh0DipbmntHRNF"
-#EMAIL_HOST_PASSWORD = "m49NTZdB6ucicgzfgYt6"
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'pickup.music@mail.ru'
 EMAIL_HOST_PASSWORD = "9NQsHFmqmeYCynFEf9QE"
 EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

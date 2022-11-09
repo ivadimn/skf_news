@@ -8,7 +8,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 import mimetypes
 
-vadimn = "WV2mrczR7jLirWjsmp1R"
+
 pickup = "9NQsHFmqmeYCynFEf9QE"
 
 
