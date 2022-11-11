@@ -1,5 +1,6 @@
 from django import forms
 from allauth.account.forms import SignupForm
+from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 from .models import Post, Author, Category
 

@@ -46,7 +46,7 @@ class Post(models.Model):
 
     def preview(self) -> str:
         if len(self.content) > Post.preview_len:
-            return "{}...".format(self.content[:124])
+            return "{0}...".format(self.content[:124])
         else:
             return self.content
 
@@ -55,7 +55,7 @@ class Post(models.Model):
         return self.created_at.strftime("%d.%m.%Y")
 
     def __str__(self):
-        return "{0}, {1}\n{2}".format(self.time_in, self.title, self.preview())
+        return "{0}, {1}, {2}\n{3}".format(self.id, self.time_in, self.title, self.preview())
 
     def get_absolute_url(self):
         return reverse("post_detail", args=[str(self.id)])

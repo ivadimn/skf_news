@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'news',
+    'django_apscheduler',
+    'news.apps.NewsConfig',
     'django_filters',
 ]
 
@@ -124,7 +125,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -155,3 +156,6 @@ EMAIL_HOST_USER = 'pickup.music@mail.ru'
 EMAIL_HOST_PASSWORD = "9NQsHFmqmeYCynFEf9QE"
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25

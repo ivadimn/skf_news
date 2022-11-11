@@ -1,4 +1,8 @@
 from random import choice, randint
+from .models import *
+from random import randint, choice
+from django.contrib.auth.models import User
+from datetime import datetime, timedelta
 import json
 import string
 
@@ -113,3 +117,19 @@ def censor(content: str) -> str:
                 raw_words[i] = "{0}{1}".format(replace(raw_word[:-1]), last_symbol)
     return " ".join(raw_words)
 
+
+def get_weekly_mail():
+    users = dict()
+    dt = datetime.now() - timedelta(days=7)
+    posts = Post.objects.filter(created_at__gt=dt)
+    for post in posts:
+        cats = post.categories.all()
+        for cat in cats:
+            us = CategoryUser.objects.filter(category=cat)
+            for u in us:
+                email = users.get(u.user.email)
+                if email:
+                    email.append(post.title)
+                else:
+                    users[u.user.email] = [post.title]
+    return users

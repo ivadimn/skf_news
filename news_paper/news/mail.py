@@ -1,12 +1,6 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.image import MIMEImage
-from email.mime.audio import MIMEAudio
-from email.mime.application import MIMEApplication
-from email.mime.base import MIMEBase
-from email import encoders
-import mimetypes
 
 
 pickup = "9NQsHFmqmeYCynFEf9QE"
@@ -16,24 +10,35 @@ class Mail:
 
     def __init__(self, sender: str):
         self.__sender = sender
-        self.__server = smtplib.SMTP_SSL("smtp.mail.ru", 465)
         self.__message = None
+        self.__server = smtplib.SMTP_SSL("smtp.mail.ru", 465)
         self.__attachment = []
 
-    def prepare(self, subject: str, mbody: str, html_content: str) -> None:
+    def prepare_html(self, subject: str, html_content: str) -> None:
         self.__message = MIMEMultipart()
         self.__message["From"] = self.__sender
         self.__message["Subject"] = subject
         self.__message.attach(MIMEText(html_content, "html"))
 
-    def send(self, destinations: list) -> bool:
+    def prepare_text(self, subject: str, text_content: str) -> None:
+        self.__message = MIMEMultipart()
+        self.__message["From"] = self.__sender
+        self.__message["Subject"] = subject
+        self.__message.attach(MIMEText(text_content, "plain"))
+
+    def send(self, destination: str) -> bool:
         try:
-            self.__server.login(self.__sender, pickup)
-            self.__message["To"] = ", ".join(destinations)
-            self.__server.sendmail(self.__sender, destinations, self.__message.as_string())
+            self.__message["To"] = destination
+            self.__server.sendmail(self.__sender, destination, self.__message.as_string())
             return True
         except Exception as ex:
             print(str(ex))
             return False
-        finally:
-            self.__server.quit()
+
+    def __enter__(self):
+        self.__server.login(self.__sender, pickup)
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.__server.quit()
+

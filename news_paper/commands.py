@@ -1,5 +1,5 @@
 from news.models import *
-from news.lorem import get_text, get_title, get_content
+from news.lorem import get_text, get_title, get_content, get_weekly_mail
 from random import randint, choice
 from django.contrib.auth.models import User
 # Создать пользователей (с помощью метода User.objects.create_user('username')).

@@ -131,8 +131,8 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.type_post = Post.news
-        email_list = self.get_email_list(form.cleaned_data.get("categories"))
-        self.send_email(post, email_list)
+        #email_list = self.get_email_list(form.cleaned_data.get("categories"), post)
+        #self.send_email(post, email_list)
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -141,25 +141,23 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
         return context
 
     def send_email(self, post: Post, email_list: list):
-        html_content = render_to_string(
-            'news_created.html',
-            {
-                'post': post,
-                'user': post.author.user
-            }
-        )
-        mail = Mail("pickup.music@mail.ru")
-        mail.prepare(post.title, post.content, html_content)
-        mail.send(email_list)
+        with Mail("pickup.music@mail.ru") as mail:
+            for email in email_list:
+                mail.prepare_html(email[1], email[2])
+                mail.send(email[0])
 
-    def get_email_list(self, categories) -> list:
+    def get_email_list(self, categories, post: Post) -> list:
         emails_list = []
         for cat in categories:
-            emails_list.extend([cat_user.user.email for cat_user in CategoryUser.objects.filter(category=cat)])
+            for cat_user in CategoryUser.objects.filter(category=cat):
+                emails_list.append((cat_user.user.email, post.title, render_to_string(
+                        'news_created.html',
+                         {
+                            'post': post,
+                            'user': cat_user.user.username
+                         }
+                )))
         return emails_list
-
-
-
 
 
 class NewsUpdate(PermissionRequiredMixin, UpdateView):

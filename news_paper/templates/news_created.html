@@ -9,5 +9,6 @@
     <h4>Здравствуй, {{ user.username }}. Новая статья в твоём любимом разделе!</h4>
     <h2>{{ post.title }}</h2>
     <p> {{ post.content|truncatechars:50 }} </p>
+    <a href="http://127.0.0.1:8000/{{ post.id }}">Перейти...</a>
 </body>
 </html>
