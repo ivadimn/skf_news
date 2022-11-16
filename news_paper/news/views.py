@@ -11,6 +11,8 @@ from .models import Post, Category, CategoryUser
 from .forms import PostForm
 from .filters import PostFilter, PostCategoryFilter
 from .mail import Mail
+from .tasks import hello, printer
+
 
 
 @login_required
@@ -30,6 +32,8 @@ class PostList(LoginRequiredMixin, ListView):
     context_object_name = "post_list"
 
     def get_queryset(self):
+        hello.delay()
+        printer.apply_async([10], countdown = 5)
         queryset = super().get_queryset()
         self.filterset = PostCategoryFilter(self.request.GET, queryset)
         return self.filterset.qs
