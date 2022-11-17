@@ -1,7 +1,7 @@
 from celery import shared_task
 import time
 from .models import Post, PostCategory
-from .func import get_email_list, send_email
+from .func import get_email_list, send_email, get_weekly_mail, send_weekly_email
 
 
 @shared_task
@@ -14,7 +14,5 @@ def news_created(post_id):
 
 
 @shared_task
-def printer(n):
-    for i in range(n):
-        time.sleep(1)
-        print(i+1)
+def inform_weekly():
+    send_weekly_email()

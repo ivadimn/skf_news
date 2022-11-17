@@ -3,7 +3,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-pickup = "9NQsHFmqmeYCynFEf9QE"
+pickup = "6T55hw5DryTGMvu3pca4"
 
 
 class Mail:

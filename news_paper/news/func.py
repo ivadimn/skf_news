@@ -21,6 +21,15 @@ def get_weekly_mail():
     return users
 
 
+def send_weekly_email():
+    users = get_weekly_mail()
+    with Mail("pickup.music@mail.ru") as mail:
+        for email, body in users.items():
+            content = "\n".join(body)
+            mail.prepare_text("Новостные новинки", content)
+            mail.send(email)
+
+
 def get_email_list(categories, post: Post):
     emails_list = []
     for cat in categories:
@@ -28,8 +37,8 @@ def get_email_list(categories, post: Post):
             emails_list.append((cat_user.user.email, post.title, render_to_string(
                 'news_created.html',
                 {
+                    'hello': "Здравствуй, {0}. Новая статья в твоём любимом разделе!".format(cat_user.user.username),
                     'post': post,
-                    'user': cat_user.user.username
                 }
             )))
     return emails_list
