@@ -1,5 +1,7 @@
-from .models import Post, CategoryUser
+from django.template.loader import render_to_string
 from datetime import datetime, timedelta
+from .models import Post, CategoryUser
+from .mail import Mail
 
 
 def get_weekly_mail():
@@ -19,4 +21,22 @@ def get_weekly_mail():
     return users
 
 
+def get_email_list(categories, post: Post):
+    emails_list = []
+    for cat in categories:
+        for cat_user in CategoryUser.objects.filter(category=cat.category):
+            emails_list.append((cat_user.user.email, post.title, render_to_string(
+                'news_created.html',
+                {
+                    'post': post,
+                    'user': cat_user.user.username
+                }
+            )))
+    return emails_list
 
+
+def send_email(post: Post, email_list: list):
+    with Mail("pickup.music@mail.ru") as mail:
+        for email in email_list:
+            mail.prepare_html(email[1], email[2])
+            mail.send(email[0])
