@@ -44,8 +44,8 @@ def get_email_list(categories, post: Post):
     return emails_list
 
 
-def send_email(post: Post, email_list: list):
-    with Mail("pickup.music@mail.ru") as mail:
+def send_email(post: Post, email_list: list, pickup: str):
+    with Mail("pickup.music@mail.ru", pickup) as mail:
         for email in email_list:
             mail.prepare_html(email[1], email[2])
             mail.send(email[0])

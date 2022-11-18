@@ -1,13 +1,14 @@
 import smtplib
+import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from news_paper.config import PICKUP
 
 
 class Mail:
 
-    def __init__(self, sender: str):
+    def __init__(self, sender: str, pickup: str):
         self.__sender = sender
+        self.__pickup = pickup
         self.__message = None
         self.__server = smtplib.SMTP_SSL("smtp.mail.ru", 465)
         self.__attachment = []
@@ -34,7 +35,7 @@ class Mail:
             return False
 
     def __enter__(self):
-        self.__server.login(self.__sender, PICKUP)
+        self.__server.login(self.__sender, self.__pickup)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
