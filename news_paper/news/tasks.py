@@ -1,7 +1,7 @@
 from celery import shared_task
-import time
+import os
 from .models import Post, PostCategory
-from .func import get_email_list, send_email, get_weekly_mail, send_weekly_email
+from .func import get_email_list, send_email, send_weekly_email
 
 
 @shared_task
@@ -15,4 +15,5 @@ def news_created(post_id, pickup):
 
 @shared_task
 def inform_weekly():
-    send_weekly_email()
+    pickup = os.environ.get("PICKUP")
+    send_weekly_email(pickup)

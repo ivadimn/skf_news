@@ -21,9 +21,9 @@ def get_weekly_mail():
     return users
 
 
-def send_weekly_email():
+def send_weekly_email(pickup):
     users = get_weekly_mail()
-    with Mail("pickup.music@mail.ru") as mail:
+    with Mail("pickup.music@mail.ru", pickup) as mail:
         for email, body in users.items():
             content = "\n".join(body)
             mail.prepare_text("Новостные новинки", content)
