@@ -1,9 +1,7 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
-
-pickup = "6T55hw5DryTGMvu3pca4"
+from news_paper.config import PICKUP
 
 
 class Mail:
@@ -36,7 +34,7 @@ class Mail:
             return False
 
     def __enter__(self):
-        self.__server.login(self.__sender, pickup)
+        self.__server.login(self.__sender, PICKUP)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

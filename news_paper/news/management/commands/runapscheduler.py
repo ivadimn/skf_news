@@ -1,7 +1,4 @@
-from datetime import datetime, timedelta
 import logging
-from news_paper.news.models import Post, CategoryUser
-from news_paper.news.mail import Mail
 from django.conf import settings
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger

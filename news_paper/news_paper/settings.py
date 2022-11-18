@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from news_paper import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -153,7 +154,7 @@ ACCOUNT_FORMS = {'signup': 'news.forms.BasicSignupForm'}
 MAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'pickup.music@mail.ru'
-EMAIL_HOST_PASSWORD = "9NQsHFmqmeYCynFEf9QE"
+EMAIL_HOST_PASSWORD = config.PICKUP
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
