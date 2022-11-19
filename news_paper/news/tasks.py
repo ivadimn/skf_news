@@ -14,6 +14,5 @@ def news_created(post_id, pickup):
 
 
 @shared_task
-def inform_weekly():
-    pickup = os.environ.get("PICKUP")
+def inform_weekly(pickup):
     send_weekly_email(pickup)

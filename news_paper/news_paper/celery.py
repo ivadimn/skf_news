@@ -9,9 +9,11 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 
 app.autodiscover_tasks()
 
+pickup = os.environ.get("PICKUP")
 app.conf.beat_schedule = {
    'inform_about_last_news_weekly': {
         'task': 'news.tasks.inform_weekly',
-        'schedule': crontab(hour=5, minute=0, day_of_week='friday'),
+        'schedule': crontab(minute=0, hour='*'), #crontab(hour=5, minute=0, day_of_week='friday'),
+        'args': (pickup, ),
    }
 }
