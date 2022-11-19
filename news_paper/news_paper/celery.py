@@ -3,13 +3,14 @@ from celery import Celery
 from celery.schedules import crontab
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'news_paper.settings')
+pickup = os.environ.get("PICKUP")
+print(pickup)
 
 app = Celery('news_paper')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
 app.autodiscover_tasks()
 
-pickup = os.environ.get("PICKUP")
 app.conf.beat_schedule = {
    'inform_about_last_news_weekly': {
         'task': 'news.tasks.inform_weekly',
