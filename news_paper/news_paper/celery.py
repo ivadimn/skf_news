@@ -16,6 +16,6 @@ app.conf.beat_schedule = {
    'inform_about_last_news_weekly': {
         'task': 'news.tasks.inform_weekly',
         'schedule': crontab(minute=0, hour='*'), #crontab(hour=5, minute=0, day_of_week='friday'),
-        'arg': (pickup, )
+        'args': ("jLwvW31eWxFaf4XEGyhV", )
    }
 }

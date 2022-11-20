@@ -61,7 +61,7 @@ def send_email(post: Post, email_list: list, pickup: str):
     #         from_email="ivadimn65@yandex.ru",
     #         recipient_list=[email[0], ]
     #     )
-    with Mail("ivadimn65@yandex.ru", pickup) as mail:
+    with Mail("pickup.music@mail.ru", pickup) as mail:
         for email in email_list:
             mail.prepare_html(email[1], email[2])
             mail.send(email[0])

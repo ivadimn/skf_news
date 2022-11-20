@@ -10,7 +10,7 @@ class Mail:
         self.__sender = sender
         self.__pickup = pickup
         self.__message = None
-        self.__server = smtplib.SMTP_SSL("smtp.yandex.ru", 465)
+        self.__server = smtplib.SMTP_SSL("smtp.mail.ru", 465)
         self.__attachment = []
 
     def prepare_html(self, subject: str, html_content: str) -> None:
