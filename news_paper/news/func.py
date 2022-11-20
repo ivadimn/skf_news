@@ -1,4 +1,5 @@
 from django.template.loader import render_to_string
+from django.core.mail import  send_mail
 from datetime import datetime, timedelta
 from .models import Post, CategoryUser
 from .mail import Mail
@@ -23,6 +24,13 @@ def get_weekly_mail():
 
 def send_weekly_email(pickup):
     users = get_weekly_mail()
+    # for email, body in users.items():
+    #     send_mail(
+    #         subject="Новостные новинки",
+    #         message=content,
+    #         from_email="ivadimn65@yandex.ru",
+    #         recipient_list=[email, ]
+    #     )
     with Mail("pickup.music@mail.ru", pickup) as mail:
         for email, body in users.items():
             content = "\n".join(body)
@@ -45,7 +53,15 @@ def get_email_list(categories, post: Post):
 
 
 def send_email(post: Post, email_list: list, pickup: str):
-    with Mail("pickup.music@mail.ru", pickup) as mail:
+    print(post)
+    # for email in email_list:
+    #     send_mail(
+    #         subject="Добавлена новост: {0}".format(post.title),
+    #         message=post.content,
+    #         from_email="ivadimn65@yandex.ru",
+    #         recipient_list=[email[0], ]
+    #     )
+    with Mail("ivadimn65@yandex.ru", pickup) as mail:
         for email in email_list:
             mail.prepare_html(email[1], email[2])
             mail.send(email[0])
