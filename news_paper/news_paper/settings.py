@@ -151,9 +151,9 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_FORMS = {'signup': 'news.forms.BasicSignupForm'}
 
-MAIL_HOST = 'smtp.mail.ru'
+EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'pickup.music@mail.ru'
+EMAIL_HOST_USER = 'ivadimn65'
 EMAIL_HOST_PASSWORD = os.environ.get("PICKUP")
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
