@@ -1,4 +1,5 @@
 from django.shortcuts import redirect
+from django.core.cache import cache
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -25,7 +26,7 @@ def upgrade_me(request):
 class PostList(LoginRequiredMixin, ListView):
     model = Post
     ordering = "-created_at"
-    template_name = "post_list.html"
+    template_name = "copy.html"
     paginate_by = 10
     context_object_name = "post_list"
 
@@ -40,9 +41,12 @@ class PostList(LoginRequiredMixin, ListView):
         context["filterset"] = self.filterset
         category_id = self.request.GET.get("categories")
         if category_id is not None:
-            context["category"] = Category.objects.get(pk=int(category_id))
+            context["category"] = Category.obiects.get(pk=category_id)
+            context['is_not_subscribe'] = not CategoryUser.objects.filter(category__id=category_id,
+                                                                          user=self.request.user).exists()
         else:
             context["category"] = None
+            context['is_not_subscribe'] = False
         return context
 
     def post(self, request, *args, **kwargs):
@@ -76,8 +80,24 @@ class PostSearch(ListView):
 class PostDetail(DetailView):
     model = Post
     template_name = "post_detail.html"
+    queryset = Post.objects.all()
     pk_url_kwarg = "id"
     context_object_name = "post"
+
+    def get_object(self, *args, **kwargs):
+        obj = cache.get("post-{0}".format(self.kwargs.get("id")), None)
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set("post-{0}".format(self.kwargs["id"]), obj)
+        return obj
+
+
+class NewsList(PostList):
+    queryset = Post.objects.filter(type_post=Post.news)
+
+
+class ArticleList(PostList):
+    queryset = Post.objects.filter(type_post=Post.article)
 
 
 class ArticleCreate(PermissionRequiredMixin, CreateView):

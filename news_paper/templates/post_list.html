@@ -12,7 +12,7 @@
        {{ filterset.form.as_p }}
        <input type="submit" value="Показать">
     </form>
-    {% if category %}
+    {% if is_not_subscribe %}
         <form action=""method="post">
             {% csrf_token %}
             <label for="sign">{{ category.name }}</label>
