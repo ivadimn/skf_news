@@ -5,7 +5,7 @@ from .settings import EMAIL_HOST_PASSWORD
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'news_paper.settings')
 pickup = os.environ.get("PICKUP")
-print(pickup)
+
 
 app = Celery('news_paper')
 app.config_from_object('django.conf:settings', namespace='CELERY')

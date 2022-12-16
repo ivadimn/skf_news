@@ -12,7 +12,11 @@ class Command(BaseCommand):
         parser.add_argument('--category', type=str)
 
     def handle(self, *args, **options):
-        # здесь можете писать любой код, который выполняется при вызове вашей команды
+
+        category_name = options.get("category")
+        if category_name:
+            category = Category.objects.get(name=category_name)
+            self.stdout.write(category.name)
 
         self.stdout.write(options['category'])
 

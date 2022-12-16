@@ -10,6 +10,5 @@ def notify_subscribers(sender, instance, **kwargs):
     post_cats = PostCategory.objects.filter(post=instance)
     if len(post_cats) > 0:
         pickup = os.environ.get("PICKUP")
-        print(post_cats)
         news_created.apply_async([instance.id, pickup])
 

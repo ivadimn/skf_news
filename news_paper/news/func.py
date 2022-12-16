@@ -53,7 +53,6 @@ def get_email_list(categories, post: Post):
 
 
 def send_email(post: Post, email_list: list, pickup: str):
-    print(post)
     # for email in email_list:
     #     send_mail(
     #         subject="Добавлена новост: {0}".format(post.title),
