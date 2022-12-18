@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from news.models import Category, Post
+from news.models import Category, Post, PostCategory
 
 
 class Command(BaseCommand):
@@ -15,8 +15,17 @@ class Command(BaseCommand):
 
         category_name = options.get("category")
         if category_name:
-            category = Category.objects.get(name=category_name)
-            self.stdout.write(category.name)
+            try:
+                category = Category.objects.get(name=category_name)
+                post_cats = PostCategory.objects.filter(category=category)
+                count = len(post_cats)
+                for post_cat in post_cats:
+                    post = post_cat.post
+                    post.delete()
+                    post.save()
+                self.stdout.write(self.style.SUCCESS("Успешно удален {} статей!".format(count)))
+            except Category.DoesNotExist:
+                raise CommandError("Категория: '{0}' не существует!!".format(category_name))
 
-        self.stdout.write(options['category'])
+
 
