@@ -26,7 +26,7 @@ def upgrade_me(request):
 class PostList(LoginRequiredMixin, ListView):
     model = Post
     ordering = "-created_at"
-    template_name = "copy.html"
+    template_name = "post_list.html"
     paginate_by = 10
     context_object_name = "post_list"
 

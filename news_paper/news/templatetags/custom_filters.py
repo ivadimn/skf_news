@@ -22,7 +22,7 @@ class Censor:
         return " ".join(raw_words)
 
     def __replace(self, word: str) -> str:
-        return "{0}{1}".format(word[0], "*" * (len(word) - 1))
+        return "{0}{1}{2}".format(word[0], "*" * (len(word) - 2), word[-1])
 
     def load_mat(self) -> list:
         with open("cenz.json", "r", encoding="utf-8") as ef:
