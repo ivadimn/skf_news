@@ -180,13 +180,23 @@ LOGGING = {
     'disable_existing_loggers': False,
     'style': '{',
     'formatters': {
-        'simple': {
-            'format': '{levelname} {message}'
+        'debug_formatter': {
+            'format': '{asctime} {levelname} {message}'
         },
+        'warning_formatter': {
+            'format': '{asctime} {levelname} {pathname}-{message}'
+        },
+        'error_formatter': {
+            'format': '{asctime} {levelname} {pathname}-{message}\n{exc_info}'
+        },
+
     },
     'filters': {
         'require_debug_true': {
             '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
         },
     },
     'handlers': {
