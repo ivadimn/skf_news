@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.core.cache import cache
 from django.contrib.auth.models import Group
@@ -5,14 +6,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import  (
-    ListView, DetailView, CreateView, UpdateView, DeleteView
+    View, ListView, DetailView, CreateView, UpdateView, DeleteView
 )
 from django.template.loader import render_to_string
+from django.utils.translation import gettext as _
 from .models import Post, Category, CategoryUser
 from .forms import PostForm
 from .filters import PostFilter, PostCategoryFilter
 from .mail import Mail
-
 
 @login_required
 def upgrade_me(request):
@@ -22,6 +23,10 @@ def upgrade_me(request):
         premium_group.user_set.add(user)
     return redirect('/news')
 
+class Index(View):
+    def get(self, request):
+        string = _("Hello world")
+        return HttpResponse(string)
 
 class PostList(LoginRequiredMixin, ListView):
     model = Post
